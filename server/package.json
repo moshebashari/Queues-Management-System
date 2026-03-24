@@ -1,13 +1,37 @@
 {
-  "name": "server",
+  "name": "Queue-Management-System",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moshebashari/Queues-Management-System.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Moshe Bashari",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "chalk": "^5.4.1",
+    "connect-session-sequelize": "^8.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "lodash": "^4.17.23",
+    "mysql2": "^3.14.2",
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
