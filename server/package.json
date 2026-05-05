@@ -1,5 +1,5 @@
 {
-  "name": "Queue-Management-System",
+  "name": "queue-management-system",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -16,6 +16,8 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@hebcal/core": "^5.2.0",
+    "axios": "^1.15.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "chalk": "^5.4.1",
