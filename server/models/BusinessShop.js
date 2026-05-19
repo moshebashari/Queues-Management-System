@@ -1,7 +1,7 @@
 const { sequelize } = require('../utils/database');
 
 module.exports = (s, DataTypes) => {
-    const BusinessShop = sequelize.define('BusinessShops', {
+    const BusinessShop = sequelize.define('BusinessShop', {
         id: {
             primaryKey: true,
             type: DataTypes.INTEGER,
@@ -25,7 +25,7 @@ module.exports = (s, DataTypes) => {
         whatsappPhone: {
             type: DataTypes.STRING(10),
         },
-        voicePhone: {
+        ivrPhone: {
             type: DataTypes.STRING(10),
         }
 
@@ -42,9 +42,9 @@ module.exports = (s, DataTypes) => {
     })
 
     BusinessShop.associate = (models) => {
-        BusinessShop.hasMany(models.Employee, { foreignKey: 'business_id', targetKey: 'id' });
-        BusinessShop.hasMany(models.WorkingHours, { foreignKey: 'business_id', targetKey: 'id' });
-        BusinessShop.hasMany(models.Appointment, { foreignKey: 'business_id', targetKey: 'id' })
+        BusinessShop.hasMany(models.Employee, { as: 'employee', foreignKey: 'business_id', targetKey: 'id' });
+        BusinessShop.hasMany(models.WorkingHours, { as: 'workingHours', foreignKey: 'business_id', targetKey: 'id' });
+        BusinessShop.hasMany(models.Appointment, { as: 'appointment', foreignKey: 'business_id', targetKey: 'id' })
     }
 
     return BusinessShop;

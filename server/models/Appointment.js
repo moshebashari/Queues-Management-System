@@ -1,7 +1,8 @@
+const { literal } = require('sequelize');
 const { sequelize } = require('../utils/database');
 
 module.exports = (s, DataTypes) => {
-    const Appointment = sequelize.define('Appointments', {
+    const Appointment = sequelize.define('Appointment', {
         uuid: {
             primaryKey: true,
             type: DataTypes.UUID,
@@ -34,7 +35,6 @@ module.exports = (s, DataTypes) => {
         appointmentDateTime: {
             allowNull: false,
             type: DataTypes.DATE,
-            unique: true,
         },
         contactPhone: {
             allowNull: false,
@@ -49,7 +49,7 @@ module.exports = (s, DataTypes) => {
         },
         status: {
             allowNull: false,
-            type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
+            type: DataTypes.ENUM('pending', 'confirmed', 'completed', 'cancelled'),
             defaultValue: 'pending'
         },
         hasNotifications: {
@@ -71,15 +71,27 @@ module.exports = (s, DataTypes) => {
             { fields: ['has_notifications'] },
             { fields: ['business_id'] },
             { fields: ['empolyee_id'] },
-            { name: 'employee_schedule_index', unique: true, fields: ['employee_id', 'appointment_date_time'] }
+            { name: 'idx_employee_date_active', unique: true,
+                 fields: [
+                    'employee_id', 
+                    'appointment_date_time',
+                    literal("(case when `status` != `cancelled` then 1 else null end)")
+                ] }
         ],
         underscored: true,
-        tableName: 'appointments'
+        tableName: 'appointments',
+        hooks: {
+            beforeCreate: (app, options) => {
+                if (!app.contactPhone) {
+                    app.contactPhone = app.bookingPhone;
+                }
+            }
+        }
     })
 
     Appointment.associate = (models) => {
-        Appointment.belongsTo(models.BusinessShop, { foreignKey: 'business_id' });
-        Appointment.belongsTo(models.Employee, { foreignKey: 'empolyee_id' });
+        Appointment.belongsTo(models.BusinessShop, {as: 'businessShop', foreignKey: 'business_id' });
+        Appointment.belongsTo(models.Employee, { as: 'employee', foreignKey: 'employee_id' });
     }
 
 

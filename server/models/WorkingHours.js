@@ -2,7 +2,7 @@ const { sequelize } = require('../utils/database');
 
 
 module.exports = (s, DataTypes) => {
-    const WorkingHours = sequelize.define('workingHours', {
+    const WorkingHours = sequelize.define('WorkingHours', {
         id: {
             primaryKey: true,
             type: DataTypes.INTEGER,
@@ -51,8 +51,8 @@ module.exports = (s, DataTypes) => {
     })
 
     WorkingHours.associate = (models) => {
-        WorkingHours.belongsTo(models.BusinessShop, { foreignKey: 'business_id' });
-        WorkingHours.belongsTo(models.Employee, { foreignKey: 'empolyee_id' });
+        WorkingHours.belongsTo(models.BusinessShop, { as: 'businessShop', foreignKey: 'business_id' });
+        WorkingHours.belongsTo(models.Employee, { as: 'employee', foreignKey: 'employee_id' });
     }
 
     return WorkingHours

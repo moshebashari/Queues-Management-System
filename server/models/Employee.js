@@ -1,7 +1,7 @@
 const { sequelize } = require('../utils/database');
 
 module.exports = (s, DataTypes) => {
-    const Employee = sequelize.define('Employees', {
+    const Employee = sequelize.define('Employee', {
         id: {
             primaryKey: true,
             type: DataTypes.INTEGER,
@@ -9,9 +9,9 @@ module.exports = (s, DataTypes) => {
         },
         name: {
             allowNull: false,
-            type: DataTypes.STRING(20)
+            type: DataTypes.STRING(20),
         },
-        businessId : {
+        businessId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -36,17 +36,29 @@ module.exports = (s, DataTypes) => {
             {
                 unique: true,
                 fields: ['business_id', 'empolyee_num']
-            }
+            },
+            {
+                unique: true,
+                fields: ['business_id', 'name'],
+                name: 'business_name_idx'
+            },
+            {
+                unique: true,
+                fields: ['business_id', 'contact_phone'],
+                name: 'business_phone_idx'
+            },
+
         ],
         underscored: true,
         tableName: 'employees'
-    })  
+    })
 
     Employee.associate = (models) => {
-        Employee.belongsTo(models.BusinessShop, {foreignKey: 'business_id'});
-        Employee.hasMany(models.Appointment, {foreignKey: 'employee_id', targetKey: 'id'});
-        Employee.hasMany(models.WorkingHours, {foreignKey: 'employee_id', targetKey: 'id'});
+        Employee.belongsTo(models.BusinessShop, { as: 'businessShop', foreignKey: 'business_id' });
+        Employee.hasMany(models.Appointment, { as: 'appointment', foreignKey: 'employee_id', targetKey: 'id' });
+        Employee.hasMany(models.WorkingHours, { as: 'workingHours', foreignKey: 'employee_id', targetKey: 'id' });
+        Employee.hasOne(models.EmployeeConfigs, { as: 'employeeConfigs', foreignKey: 'employee_id', targetKey: 'id' });
     }
-    
+
     return Employee
 } 
